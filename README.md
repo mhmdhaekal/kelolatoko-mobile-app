@@ -1,5 +1,47 @@
 # kelolaToko
 
+
+## Tugas 8
+
+### Pertanyaan 1
+
+**Jelaskan perbedaan antara Navigator.push() dan Navigator.pushReplacement(), disertai dengan contoh mengenai penggunaan kedua metode tersebut yang tepat!**
+
+Navigation pada flutter pada dasarnya adalah stack, sehingga ketika ingin melakukan navigasi dilakukan stack dengan halaman lain. Terdapat dua kemungkinan dalam melakukan navigasi yaitu menggunakan `Navigator.push` atau `Navigator.pushReplacement()`. `Navigator.push()` merupakan navigasi dengan cara menambahkan halaman ke dalam `stack` navigasi, sehingga memungkinkan untuk kembali ke halaman sebelumnya (tidak menghapus stack navigasi, history route pengguna tetap tersimpan). `Navigator.pushReplacement()` merupakan navigasi dengan cara mengganti keseluruhan `navigation stack` dengan stack yang baru, sehingga tidak memungkinkan untuk kembali ke halaman sebelumnya. Penggunaan yang cocok:
+
+`Navigator.push()` : Jika pengguna di halaman list item dan ingin melihat halaman detail item, sehingga ketika pengguna ingin kembali ke halaman list dapat menggunakan `back button / gesture back` atau menggunakan method `pop` 
+
+`Navigator.pushReplacement()` : Jika pengguna di halaman login dan sukses login, pengguna akan diarahkan ke halaman `home`. Navigasi yang digunakan adalah `pushReplacement` hal tersebut dikarenakan pengguna tidak membutuhkan kembali page login, dan ketika pengguna melakukan `menekan back button / gesture back` pengguna tidak akan ke halaman login.
+
+### Pertanyaan 2
+
+**Jelaskan masing-masing layout widget pada Flutter dan konteks penggunaannya masing-masing!**
+
+#### Single-child layout widgets
+- align - layout yang menyesuaikan dengan ukuran `child`
+- AspectRatio - layout yang menyesuaikan child dengan `aspect ratio` yang diberikan
+- baseline - layout yang meletakkan child baseline
+- Center - layout yang meletakkan child di center
+- ConstrainedBBox - layout widget yang memberikan jarak tambahan di antara child
+- Container - layout widget berupa container yang dapat diisi widget (widget dapat didefinisikan posisi, dan ukuran)
+- CustomSingleChildLayout - Single Child Layout yang dapat di kustomisasi
+- Expanded - Layout widget yang extend dari layout widget row, column, flex untuk mengisi ruang yang tersedia, digunakan untuk layout linear.
+- FittedBox - Layout yang meletakkan child sesuai dengan tempat yang tersedia (fit).
+- Padding - Layout yang dapat memberikan padding terhadap child.
+- SizedBox - Layout box yang dapat didefinisikan panjang dan lebarnya.
+
+### Multi-child layout widgets
+- Column - Layout yang meletakkan child secara vertikal.
+- Grid - Layout yang meletakkan child dengan pattern yang diberikan (dapat vertikan maupun horizontal).
+- ListView - Layout yang dapat discroll dan menampilkan list dari child (widgets).
+- Row - Layout yang meletakkan child secara horizontal.
+
+### Pertanyaan 3
+
+**Sebutkan apa saja elemen input pada form yang kamu pakai pada tugas kali ini dan jelaskan mengapa kamu menggunakan elemen input tersebut!**
+
+
+
 ---
 ## Tugas 7
 
