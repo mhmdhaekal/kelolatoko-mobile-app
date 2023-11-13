@@ -1,49 +1,5 @@
 import 'package:flutter/material.dart';
-
-class MyHomePage extends StatelessWidget {
-  MyHomePage({Key? key}) : super(key: key);
-  final List<MenuItem> menuItems = [
-    MenuItem("Lihat Item", Icons.view_list, Colors.blue),
-    MenuItem("Tambah Produk", Icons.add, Colors.green),
-    MenuItem("Logout", Icons.logout, Colors.red)
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "kelolaToko",
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            const Padding(padding: EdgeInsets.only(top: 10.0, bottom: 10.0)),
-            const Text(
-              "Welcome to kelolaToko",
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
-            ),
-            GridView.count(
-              primary: true,
-              padding: const EdgeInsets.all(20),
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
-              crossAxisCount: 3,
-              shrinkWrap: true,
-              children: menuItems
-                  .map((MenuItem item) => MenuCard(item, Key(item.name)))
-                  .toList(),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+import 'package:kelola_toko/screens/add_product.dart';
 
 class MenuItem {
   final String name;
@@ -89,6 +45,10 @@ class MenuCard extends StatelessWidget {
   }
 
   void handleTap(BuildContext context) {
+    if (menuItem.name == "Add Product") {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => const AddProduct()));
+    }
     final snackbar =
         SnackBar(content: Text('Kamu telah menekan tombol ${menuItem.name}'));
     ScaffoldMessenger.of(context)
