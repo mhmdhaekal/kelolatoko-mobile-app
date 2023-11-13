@@ -40,6 +40,10 @@ Navigation pada flutter pada dasarnya adalah stack, sehingga ketika ingin melaku
 
 **Sebutkan apa saja elemen input pada form yang kamu pakai pada tugas kali ini dan jelaskan mengapa kamu menggunakan elemen input tersebut!**
 
+- `TextFormField`                 : Elemen input ini digunakan untuk input `product name` dan `product description`, hal ini disebabkan keduanya bertipe String, dan biasanya diinput sesuai dengan keeinginan pengguna.
+- `TextFormField - try.parseint`  : Elemen input ini digunakan untuk input `price` dan `stock`, perbedaan utama elemen input ini dibandingkan `TextFormField` adalah dibagian `onChanged` terdapat validasi tambahan yaitu akan mencoba parse string menjadi integer.
+- `DropdownButtonFormField`       : Elemen input ini digunakan untuk input `category` berdasarkan dropdown category yang tersedia. 
+
 
 
 ---
