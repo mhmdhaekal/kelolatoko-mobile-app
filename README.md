@@ -44,7 +44,345 @@ Navigation pada flutter pada dasarnya adalah stack, sehingga ketika ingin melaku
 - `TextFormField - try.parseint`  : Elemen input ini digunakan untuk input `price` dan `stock`, perbedaan utama elemen input ini dibandingkan `TextFormField` adalah dibagian `onChanged` terdapat validasi tambahan yaitu akan mencoba parse string menjadi integer.
 - `DropdownButtonFormField`       : Elemen input ini digunakan untuk input `category` berdasarkan dropdown category yang tersedia. 
 
+### Pertanyaan 4
 
+**Bagaimana penerapan clean architecture pada aplikasi Flutter?**
+
+Penerapan clean architectur pada aplikasi flutter adalah dengan cara membagi aplikasi menjadi beberapa layers yaitu:
+
+- Presentation Layer : Layer yang berhubungan dengan interaksi user dengan aplikasi, terdiri dari:
+    - Pages
+    - State Management
+    - Widgets
+
+- Domain Layer        : Layer yang tidak memiliki dependencies dengan layer lain, dan layer yang mendefinisikan logic, entities, dan business model dari aplikasi, terdiri dari:
+    - Entities
+    - Repository Interfaces
+    - Use Cases
+
+- Data Layer          : Layer yang terdiri atas sumber dari data yang digunakan dalam aplikasi, terdiri dari:
+    - Repositories
+    - Data Sources
+    - Models
+
+
+### Pertanyaan 5
+
+**Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step! (bukan hanya sekadar mengikuti tutorial)**
+
+- Menerapkan clean architechture, dengan membuat folders screens dan widgets, lalu memindahkan `menu.dart` ke folder screen, dan memindahkan widgets `MenuItem` ke files `menu_card.dart` yang berada di `/widgets`. 
+- Membuat files `left_drawer.card` yang berada di directory `/widgets`.
+- Mengimplementasikan `left_drawer.card`
+  
+```dart
+import 'package:flutter/material.dart';
+import 'package:kelola_toko/screens/menu.dart';
+import 'package:kelola_toko/screens/add_product.dart';
+
+class LeftDrawer extends StatelessWidget {
+  const LeftDrawer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(20.0),
+          bottomRight: Radius.circular(20.0),
+        ),
+      ),
+      backgroundColor: Theme.of(context).colorScheme.primary,
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          const DrawerHeader(
+              child: Text(
+            "KelolaToko",
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 24.0,
+                fontWeight: FontWeight.bold),
+          )),
+          ListTile(
+            leading: const Icon(
+              Icons.view_list,
+              color: Colors.white,
+            ),
+            title: const Text("Home", style: TextStyle(color: Colors.white)),
+            onTap: () {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => MyHomePage()));
+            },
+          ),
+          ListTile(
+            leading: const Icon(
+              Icons.add,
+              color: Colors.white,
+            ),
+            title: const Text("Add Product",
+                style: TextStyle(color: Colors.white)),
+            onTap: () {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => const AddProduct()));
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+```
+
+- Menampilkan `left_drawer` di screens `menu.dart`
+
+```dart
+...
+  drawer: const LeftDrawer(),
+...
+```
+- Membuat halaman `add_product.dart`:
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:kelola_toko/widgets/left_drawer.dart';
+
+class AddProduct extends StatefulWidget {
+  const AddProduct({super.key});
+
+  @override
+  State<AddProduct> createState() => _AddProductState();
+}
+
+class _AddProductState extends State<AddProduct> {
+  final _formKey = GlobalKey<FormState>();
+  String _name = "";
+  String _description = "";
+  int _price = 0;
+  int _stock = 0;
+  String _category = "";
+
+  List<String> categories = <String>[
+    "None",
+    "Mouse",
+    "Keyboard",
+    "Monitor",
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
+      appBar: AppBar(
+        title: const Text(
+          "Add Product",
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0),
+        ),
+        shadowColor: Colors.transparent,
+        foregroundColor: Colors.black,
+        backgroundColor: Colors.transparent,
+        bottom: const PreferredSize(
+            preferredSize: Size.fromHeight(10.0),
+            child: Divider(
+              color: Colors.black,
+              thickness: 1,
+            )),
+      ),
+      drawer: const LeftDrawer(),
+      body: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                      hintText: "Product Name",
+                      labelText: "Product Name",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                      )),
+                  onChanged: (String? value) {
+                    setState(() {
+                      _name = value!;
+                    });
+                  },
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return "Product name cannot be empty!";
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                      hintText: "Description",
+                      labelText: "Description",
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0))),
+                  onChanged: (String? value) {
+                    setState(() {
+                      _description = value!;
+                    });
+                  },
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return "Description cannot be empty!";
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                      hintText: "Price",
+                      labelText: "Price",
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0))),
+                  onChanged: (String? value) {
+                    setState(() {
+                      _price = int.tryParse(value!) ?? _price;
+                    });
+                  },
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return "Price cannot be empty!";
+                    }
+
+                    if (int.tryParse(value) == null) {
+                      return "Price must be a number!";
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                      hintText: "Stock",
+                      labelText: "Stock",
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0))),
+                  onChanged: (String? value) {
+                    setState(() {
+                      _stock = int.tryParse(value!) ?? _stock;
+                    });
+                  },
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return "Stock cannot be empty!";
+                    }
+
+                    if (int.tryParse(value) == null) {
+                      return "Stock must be a number!";
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: DropdownButtonFormField<String>(
+                  decoration: InputDecoration(
+                      hintText: "Category",
+                      labelText: "Category",
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0))),
+                  items: categories.map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  onChanged: (String? value) {
+                    setState(() {
+                      _category = value!;
+                    });
+                  },
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return "Category cannot be empty!";
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          Theme.of(context).colorScheme.primary),
+                    ),
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title:
+                                    const Text("Product successfully saved!"),
+                                content: SingleChildScrollView(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text('Product name: $_name'),
+                                      Text('Description: $_description'),
+                                      Text('Price: $_price'),
+                                      Text('Stock: $_stock'),
+                                      Text('Category: $_category'),
+                                    ],
+                                  ),
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text("OK"),
+                                  )
+                                ],
+                              );
+                            });
+                        _formKey.currentState!.reset();
+                      }
+                    },
+                    child: const Text(
+                      "Save Product",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+- menambahkan navigator di `menu.dart` ketika menekan button `add_product.dart`
+```dart
+...
+  if (menuItem.name == "Add Product") {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => const AddProduct()));
+    }
+...
+```
+  
 
 ---
 ## Tugas 7
