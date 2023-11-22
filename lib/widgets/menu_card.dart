@@ -5,6 +5,8 @@ import 'package:kelola_toko/screens/add_product.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:kelola_toko/screens/login.dart';
+import 'package:kelola_toko/screens/add_category.dart';
+import 'package:kelola_toko/screens/list_product.dart';
 
 class MenuItem {
   final String name;
@@ -54,6 +56,12 @@ class MenuCard extends StatelessWidget {
     if (menuItem.name == "Add Product") {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => const AddProduct()));
+    } else if (menuItem.name == "Add Category") {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const AddCategory()));
+    } else if (menuItem.name == "Item List") {
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => const ProductPage()));
     } else if (menuItem.name == "Logout") {
       final response =
           await request.logout("https://kelolatoko-app.fly.dev/auth/logout/");

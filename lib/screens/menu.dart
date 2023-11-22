@@ -7,6 +7,7 @@ class MyHomePage extends StatelessWidget {
   final List<MenuItem> menuItems = [
     MenuItem("Item List", Icons.view_list, Colors.blue),
     MenuItem("Add Product", Icons.add, Colors.green),
+    MenuItem("Add Category", Icons.category, Colors.cyan),
     MenuItem("Logout", Icons.logout, Colors.red)
   ];
 

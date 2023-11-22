@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kelola_toko/screens/add_category.dart';
 import 'package:kelola_toko/screens/menu.dart';
 import 'package:kelola_toko/screens/add_product.dart';
 
@@ -47,6 +48,18 @@ class LeftDrawer extends StatelessWidget {
             onTap: () {
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => const AddProduct()));
+            },
+          ),
+          ListTile(
+            leading: const Icon(
+              Icons.category,
+              color: Colors.white,
+            ),
+            title: const Text("Add Category",
+                style: TextStyle(color: Colors.white)),
+            onTap: () {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => const AddCategory()));
             },
           ),
         ],

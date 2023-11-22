@@ -1,5 +1,13 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:kelola_toko/screens/menu.dart';
 import 'package:kelola_toko/widgets/left_drawer.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:kelola_toko/models/category.dart';
 
 class AddProduct extends StatefulWidget {
   const AddProduct({super.key});
@@ -18,13 +26,11 @@ class _AddProductState extends State<AddProduct> {
 
   List<String> categories = <String>[
     "None",
-    "Mouse",
-    "Keyboard",
-    "Monitor",
   ];
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
@@ -178,38 +184,33 @@ class _AddProductState extends State<AddProduct> {
                       backgroundColor: MaterialStateProperty.all<Color>(
                           Theme.of(context).colorScheme.primary),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title:
-                                    const Text("Product successfully saved!"),
-                                content: SingleChildScrollView(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text('Product name: $_name'),
-                                      Text('Description: $_description'),
-                                      Text('Price: $_price'),
-                                      Text('Stock: $_stock'),
-                                      Text('Category: $_category'),
-                                    ],
-                                  ),
-                                ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: const Text("OK"),
-                                  )
-                                ],
-                              );
-                            });
-                        _formKey.currentState!.reset();
+                        final response = await request.postJson(
+                            "https://kelolatoko-app.fly.dev/create-product-ajax/",
+                            jsonEncode(<String, String>{
+                              'name': _name,
+                              'description': _description,
+                              'price': _price.toString(),
+                              'stock': _stock.toString(),
+                              'category': _category,
+                            }));
+                        if (response['status'] == 'success') {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text("Success adding new product!"),
+                          ));
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MyHomePage()),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text("Oops! please try again later"),
+                          ));
+                        }
                       }
                     },
                     child: const Text(
